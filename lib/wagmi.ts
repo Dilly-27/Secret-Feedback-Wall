@@ -1,9 +1,13 @@
 import { getDefaultConfig } from '@rainbow-me/rainbowkit';
-import { sepolia, hardhat } from 'viem/chains';
+import { sepolia } from 'viem/chains';
+import { http } from 'viem';
 
 export const config = getDefaultConfig({
   appName: 'Secret Feedback Wall',
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || 'YOUR_PROJECT_ID',
-  chains: [sepolia, hardhat],
+  chains: [sepolia],
+  transports: {
+    [sepolia.id]: http('https://ethereum-sepolia-rpc.publicnode.com'),
+  },
   ssr: true,
 });
