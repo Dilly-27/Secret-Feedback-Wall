@@ -52,7 +52,7 @@ async function pushToGitHub() {
     console.log(`✅ Connected as: ${user.login}`);
     
     // Create repository name from current directory or use a default
-    const repoName = process.argv[2] || 'fhevm-dapp';
+    const repoName = process.argv[2] || 'Secret-Feedback-Wall';
     const isPrivate = process.argv[3] === 'private';
     
     console.log(`\n📦 Creating repository: ${repoName}...`);
