@@ -1,9 +1,12 @@
 Deploying contracts with the account: 0x16705862735Fbab9d59681Fd0aBb1478f598530a
-Account balance: 0
+Account balance: 2000000000000000000
 Admin address: 0x16705862735fbab9d59681fd0abb1478f598530a
-ProviderError: insufficient funds for gas * price + value: have 0 want 403325004033250
-    at HttpProvider.request (/home/runner/workspace/node_modules/hardhat/src/internal/core/providers/http.ts:116:21)
-    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at async HardhatEthersSigner.sendTransaction (/home/runner/workspace/node_modules/@nomicfoundation/hardhat-ethers/src/signers.ts:181:18)
-    at async ContractFactory.deploy (/home/runner/workspace/node_modules/ethers/src.ts/contract/factory.ts:111:24)
-    at async main (/home/runner/workspace/scripts/deploy.ts:13:24)
+SecretFeedbackWall deployed to: 0x258019202ea51A2682914Be48A6DE4eE42e90ad3
+Admin set to: 0x16705862735fbab9d59681fd0abb1478f598530a
+
+=== Deployment Summary ===
+Contract Address: 0x258019202ea51A2682914Be48A6DE4eE42e90ad3
+Admin Address: 0x16705862735fbab9d59681fd0abb1478f598530a
+Network: sepolia
+========================
+
