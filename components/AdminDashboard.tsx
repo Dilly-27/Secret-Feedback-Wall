@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useAccount, useReadContract } from 'wagmi';
 import { CONTRACT_ADDRESS, CONTRACT_ABI, ADMIN_ADDRESS } from '@/lib/constants';
 import { decryptMessage } from '@/lib/encryption';
+import { getAdminPrivateKey } from '@/lib/crypto';
+import { AdminKeySetup } from './AdminKeySetup';
 
 interface DecryptedMessage {
   id: number;
@@ -15,6 +17,7 @@ interface DecryptedMessage {
 export function AdminDashboard() {
   const { address } = useAccount();
   const [decryptedMessages, setDecryptedMessages] = useState<DecryptedMessage[]>([]);
+  const [hasPrivateKey, setHasPrivateKey] = useState(false);
   
   const { data: messages, refetch } = useReadContract({
     address: CONTRACT_ADDRESS,
@@ -27,6 +30,18 @@ export function AdminDashboard() {
     abi: CONTRACT_ABI,
     functionName: 'getMessageCount',
   });
+
+  useEffect(() => {
+    const checkPrivateKey = () => {
+      const privateKey = getAdminPrivateKey();
+      setHasPrivateKey(!!privateKey);
+    };
+
+    checkPrivateKey();
+
+    const interval = setInterval(checkPrivateKey, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (messages && Array.isArray(messages)) {
@@ -98,6 +113,8 @@ export function AdminDashboard() {
 
   return (
     <div className="max-w-4xl mx-auto">
+      <AdminKeySetup />
+      
       <div className="glass-effect rounded-3xl p-8 shadow-2xl">
         <div className="flex justify-between items-center mb-6">
           <div>
@@ -117,7 +134,9 @@ export function AdminDashboard() {
             </button>
             <button
               onClick={handleDecryptAll}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all"
+              disabled={!hasPrivateKey}
+              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              title={!hasPrivateKey ? 'Generate encryption keys first' : 'Decrypt all messages'}
             >
               🔓 Decrypt All
             </button>
@@ -145,7 +164,9 @@ export function AdminDashboard() {
                   {!msg.decrypted && !msg.isDecrypting && (
                     <button
                       onClick={() => handleDecrypt(msg.id)}
-                      className="px-3 py-1 bg-purple-600 text-white text-sm rounded-lg hover:bg-purple-700 transition-all"
+                      disabled={!hasPrivateKey}
+                      className="px-3 py-1 bg-purple-600 text-white text-sm rounded-lg hover:bg-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      title={!hasPrivateKey ? 'Generate encryption keys first' : 'Decrypt this message'}
                     >
                       🔓 Decrypt
                     </button>
